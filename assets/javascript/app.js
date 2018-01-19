@@ -6,6 +6,16 @@ $(document).ready(function(){
 
             //now you can open modal from code
             $('#modal1').modal('open');
+
+            $('.datepicker').pickadate({
+                selectMonths: true, // Creates a dropdown to control month
+                selectYears: 15, // Creates a dropdown of 15 years to control year,
+                format: "mm/dd/yyyy",
+                today: 'Today',
+                clear: 'Clear',
+                close: 'Ok',
+                closeOnSelect: true // Close upon selecting a date,
+              });
   
   });
 
@@ -18,6 +28,42 @@ $(document).ready(function(){
           'Imagery © <a href="http://mapbox.com">Mapbox</a>',
       id: 'mapbox.streets'
   }).addTo(mymap);
-  
-  
-  
+
+  //on click of submit
+  $("#submit").on("click", function() {
+
+  //create variables for start / end cities, start / end dates, categories selected
+    var userStartLoc = $("#userStart").val().trim();
+    var userEndLoc = $("#userEnd").val().trim();
+    var userStartDate = $("#userDateStart").val().trim();
+    var userEndDate = $("#userDateEnd").val().trim();
+
+    //clear inputs after submit
+    $("#userStart").val("");
+    $("#userStartDate").val("");
+    $("#userEnd").val("");
+    $("#userDateEnd").val("");
+
+    console.log(userStartLoc);
+    console.log(userStartDate);
+    console.log(userEndLoc);
+    console.log(userEndDate);
+
+    //checks if a single checkbox is checked
+    if( $('#concerts').is(':checked') ){
+        console.log('concerts');
+    }
+
+    //checks all checkboxes and pushes the id to an array
+    var checkboxes = $("input[type='checkbox']");
+    console.log(checkboxes);
+    var checks = [];
+
+    for(let i in checkboxes){
+        if( checkboxes[i].checked ){
+            checks.push(checkboxes[i].id)
+        }
+    }
+
+    console.log(checks)
+  });
