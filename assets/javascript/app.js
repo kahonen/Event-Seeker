@@ -1,5 +1,6 @@
 // $(document).ready(function () {
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
+
     //initialize all modals           
     $('.modal').modal();
 
@@ -63,8 +64,10 @@ function displayRoute(userStartLoc, userEndLoc) {
 
 // eventful api key GGCFgxMwzgX7bgfM.
 
-//on click of submit
-$("#submit").on("click", function () {
+  //on click of submit
+  $("#submit").on("click", function() {
+
+  //create variables for start / end cities, start / end dates, categories selected
 
     var userStartLoc = $("#userStart").val().trim();
     var userEndLoc = $("#userEnd").val().trim();
@@ -120,6 +123,7 @@ $("#submit").on("click", function () {
 });
 
 map.on("click", function(e){
+
 
     console.log(e)
 });
