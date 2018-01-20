@@ -1,62 +1,85 @@
-$(document).ready(function(){
+// $(document).ready(function () {
     // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-            //initialize all modals           
-            $('.modal').modal();
 
-            //now you can open modal from code
-            $('#modal1').modal('open');
+    //initialize all modals           
+    $('.modal').modal();
 
-            $('.datepicker').pickadate({
-                selectMonths: true, // Creates a dropdown to control month
-                selectYears: 15, // Creates a dropdown of 15 years to control year,
-                format: "mm/dd/yyyy",
-                today: 'Today',
-                clear: 'Clear',
-                close: 'Ok',
-                closeOnSelect: true // Close upon selecting a date,
-              });
-<<<<<<< HEAD
+    //now you can open modal from code
+    $('#modal1').modal('open');
 
-              $(".button-collapse").sideNav({
-                closeOnClick: false,
-              });
-              //setTimeout(mapKeyThing, 2000)
-              
-                L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
+    $('.datepicker').pickadate({
+        selectMonths: true, // Creates a dropdown to control month
+        selectYears: 15, // Creates a dropdown of 15 years to control year,
+        format: "mm/dd/yyyy",
+        today: 'Today',
+        clear: 'Clear',
+        close: 'Ok',
+        closeOnSelect: true // Close upon selecting a date,
+    });
 
-                var map = L.mapquest.map('map', {
-                    center: [37.7749, -122.4194],
-                    layers: L.mapquest.tileLayer('map'),
-                    zoom: 12
-                });
-
-                map.addControl(L.mapquest.control());
-              
-              
-  });
+    L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
+    var map = L.mapquest.map('map', {
+        center: [39.410733, -100.546875],
+        layers: L.mapquest.tileLayer('map'),
+        zoom: 5,
+    });
 
 
+    $(".button-collapse").sideNav();
+    //     closeOnClick: false,
+    //   });
+    //setTimeout(mapKeyThing, 2000)
 
-//   var mymap = L.map('mapid').setView([39.138582, -98.964844], 5);
+// });
 
-//   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-//       maxZoom: 18,
-//       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-//           '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-//           'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-//       id: 'mapbox.streets'
-//   }).addTo(mymap);
+function displayRoute(userStartLoc, userEndLoc) {
+    // L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
+    // map = L.mapquest.map('map', {
+    //     center: [39.410733, -100.546875],
+    //     layers: L.mapquest.tileLayer('map'),
+    //     zoom: 8,
+    // });
+    var directions = L.mapquest.directions();
+    directions.route({
+        start: userStartLoc,
+        end: userEndLoc,
+        zoom: 8,
+    });
+}
 
-  //mymap.zoomControl.setPosition('topright');
+// function displayEventInfo() {
+
+//     var queryURL = "http://api.eventful.com/json/events/search?app_key=GGCFgxMwzgX7bgfM&category="+ checks + "&location=" + location;
+//     var location = 
+    
+
+//     $.ajax({
+//       url: queryURL,
+//       method: "GET"
+//     }).done(function (response) {
+
+//  console.log(response)
+//     });
+// };
+
+// eventful api key GGCFgxMwzgX7bgfM.
 
   //on click of submit
   $("#submit").on("click", function() {
 
   //create variables for start / end cities, start / end dates, categories selected
+
     var userStartLoc = $("#userStart").val().trim();
     var userEndLoc = $("#userEnd").val().trim();
     var userStartDate = $("#userDateStart").val().trim();
     var userEndDate = $("#userDateEnd").val().trim();
+
+    $("#userStart").empty();
+    $("#userEnd").empty();
+    //create variables for start / end cities, start / end dates, categories selected
+    displayRoute(userStartLoc,userEndLoc);
+
+
 
     //clear inputs after submit
     // $("#userStart").val("");
@@ -64,23 +87,23 @@ $(document).ready(function(){
     // $("#userEnd").val("");
     // $("#userDateEnd").val("");
 
-    console.log(userStartLoc);
-    console.log(userStartDate);
-    console.log(userEndLoc);
-    console.log(userEndDate);
+    // console.log(userStartLoc);
+    // console.log(userStartDate);
+    // console.log(userEndLoc);
+    // console.log(userEndDate);
 
     //checks if a single checkbox is checked
-    if( $('#concerts').is(':checked') ){
+    if ($('#concerts').is(':checked')) {
         console.log('concerts');
-    }
+    };
 
     //checks all checkboxes and pushes the id to an array
     var checkboxes = $("input[type='checkbox']");
     console.log(checkboxes);
     var checks = [];
 
-    for(let i in checkboxes){
-        if( checkboxes[i].checked ){
+    for (let i in checkboxes) {
+        if (checkboxes[i].checked) {
             checks.push(checkboxes[i].id)
         }
     }
@@ -92,69 +115,16 @@ $(document).ready(function(){
     var endInfo = $('#endInfo').detach();
     var firstCol = $('#firstCol').detach();
     var secondCol = $('#secondCol').detach();
-    $('#targetDiv').append(startInfo, endInfo, firstCol, secondCol);
-
-
+    var submitBtn = $('#submit').detach();
+    $('#targetDiv').prepend(startInfo, endInfo, firstCol, secondCol, submitBtn);
 
     $('.button-collapse').sideNav();
 
-  });
+});
+
+map.on("click", function(e){
 
 
-
-
-
-
-=======
-  
-  });
-
-  var mymap = L.map('mapid').setView([39.138582, -98.964844], 5);
-
-  L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-      maxZoom: 18,
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-          '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-          'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      id: 'mapbox.streets'
-  }).addTo(mymap);
-
-  //on click of submit
-  $("#submit").on("click", function() {
-
-  //create variables for start / end cities, start / end dates, categories selected
-    var userStartLoc = $("#userStart").val().trim();
-    var userEndLoc = $("#userEnd").val().trim();
-    var userStartDate = $("#userDateStart").val().trim();
-    var userEndDate = $("#userDateEnd").val().trim();
-
-    //clear inputs after submit
-    $("#userStart").val("");
-    $("#userStartDate").val("");
-    $("#userEnd").val("");
-    $("#userDateEnd").val("");
-
-    console.log(userStartLoc);
-    console.log(userStartDate);
-    console.log(userEndLoc);
-    console.log(userEndDate);
-
-    //checks if a single checkbox is checked
-    if( $('#concerts').is(':checked') ){
-        console.log('concerts');
-    }
-
-    //checks all checkboxes and pushes the id to an array
-    var checkboxes = $("input[type='checkbox']");
-    console.log(checkboxes);
-    var checks = [];
-
-    for(let i in checkboxes){
-        if( checkboxes[i].checked ){
-            checks.push(checkboxes[i].id)
-        }
-    }
-
-    console.log(checks)
-  });
->>>>>>> master
+    console.log(e)
+});
+//http://api.eventful.com/json/events/search?app_key=XXX&category=music&location=london&sort_order=popularity
