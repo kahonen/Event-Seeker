@@ -1,7 +1,4 @@
-// $(document).ready(function () {
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-
-    //initialize all modals           
+        
     $('.modal').modal();
 
     //now you can open modal from code
@@ -10,7 +7,7 @@
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
-        format: "mm/dd/yyyy",
+        format: 'yyyy/mm/dd', //working for proper display "mm/dd/yyyy"
         today: 'Today',
         clear: 'Clear',
         close: 'Ok',
@@ -26,19 +23,9 @@
 
 
     $(".button-collapse").sideNav();
-    //     closeOnClick: false,
-    //   });
-    //setTimeout(mapKeyThing, 2000)
-
-// });
 
 function displayRoute(userStartLoc, userEndLoc) {
-    // L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
-    // map = L.mapquest.map('map', {
-    //     center: [39.410733, -100.546875],
-    //     layers: L.mapquest.tileLayer('map'),
-    //     zoom: 8,
-    // });
+
     var directions = L.mapquest.directions();
     directions.route({
         start: userStartLoc,
@@ -47,50 +34,21 @@ function displayRoute(userStartLoc, userEndLoc) {
     });
 }
 
-// function displayEventInfo() {
-
-//     var queryURL = "http://api.eventful.com/json/events/search?app_key=GGCFgxMwzgX7bgfM&category="+ checks + "&location=" + location;
-//     var location = 
-    
-
-//     $.ajax({
-//       url: queryURL,
-//       method: "GET"
-//     }).done(function (response) {
-
-//  console.log(response)
-//     });
-// };
-
-// eventful api key GGCFgxMwzgX7bgfM.
+// var userStartDate;
+// var userEndDate;
 
   //on click of submit
-  $("#submit").on("click", function() {
+  $("#submit").on("click", function search () {
+
 
   //create variables for start / end cities, start / end dates, categories selected
-
     var userStartLoc = $("#userStart").val().trim();
     var userEndLoc = $("#userEnd").val().trim();
     var userStartDate = $("#userDateStart").val().trim();
     var userEndDate = $("#userDateEnd").val().trim();
 
-    $("#userStart").empty();
-    $("#userEnd").empty();
     //create variables for start / end cities, start / end dates, categories selected
     displayRoute(userStartLoc,userEndLoc);
-
-
-
-    //clear inputs after submit
-    // $("#userStart").val("");
-    // $("#userStartDate").val("");
-    // $("#userEnd").val("");
-    // $("#userDateEnd").val("");
-
-    // console.log(userStartLoc);
-    // console.log(userStartDate);
-    // console.log(userEndLoc);
-    // console.log(userEndDate);
 
     //checks if a single checkbox is checked
     if ($('#concerts').is(':checked')) {
@@ -100,7 +58,7 @@ function displayRoute(userStartLoc, userEndLoc) {
     //checks all checkboxes and pushes the id to an array
     var checkboxes = $("input[type='checkbox']");
     console.log(checkboxes);
-    var checks = [];
+    checks = [];
 
     for (let i in checkboxes) {
         if (checkboxes[i].checked) {
@@ -109,7 +67,6 @@ function displayRoute(userStartLoc, userEndLoc) {
     }
 
     console.log(checks)
-
 
     var startInfo = $('#startInfo').detach();
     var endInfo = $('#endInfo').detach();
@@ -120,11 +77,55 @@ function displayRoute(userStartLoc, userEndLoc) {
 
     $('.button-collapse').sideNav();
 
+// }); moved to line __ so date variable would populate
+
+var lat;
+var lng;
+var latLng = "";
+var checks = [];
+var userDateRange = "";
+
+console.log(userDateRange);
+
+function eventfulSearch() {
+
+    map.on("click", function mapClick (e) {
+
+        lat = e.latlng.lat
+        lng = e.latlng.lng
+        latLng = lat + ", " + lng
+        console.log(latLng)
+        userDateRange = userStartDate + "-" + userEndDate;
+        console.log(userDateRange);
+
+    var oArgs = {
+
+        app_key: "KDLDX7hfWzvMDssH",
+
+        t: userDateRange, 
+     
+        c: checks, //category
+
+        where: latLng,
+
+        within: 50, //set radius
+
+        page_size: 25,
+
+        sort_order: "popularity"
+
+};
+
+    EVDB.API.call("/events/search", oArgs, function(oData) {
+
+        var eventsArr = oData;
+    
+        console.log(eventsArr);
+
 });
 
-map.on("click", function(e){
+})};
 
+eventfulSearch();
 
-    console.log(e)
 });
-//http://api.eventful.com/json/events/search?app_key=XXX&category=music&location=london&sort_order=popularity

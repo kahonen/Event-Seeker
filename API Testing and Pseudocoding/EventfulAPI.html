@@ -9,50 +9,23 @@ Javascript Sample page <br>
 
 <script type="text/javascript">
 
-function show_alert()
-
-//Eventful API Key = KDLDX7hfWzvMDssH
-
-{
-
-  var oArgs = {
-
-            app_key:"KDLDX7hfWzvMDssH",
-
-            id: "20218701",
-
-            page_size: 25 ,
-
-  };
-
-  EVDB.API.call("/events/get", oArgs, function(oData) {
-
-      console.log(oData)
-
-    });
-
-}
-
-function show_alert2()
-
-{
+function show_alert2() {
 
    var oArgs = {
 
       app_key: "KDLDX7hfWzvMDssH",
 
-      //keyword
-      //q: ,
+      //q: , //keyword
 
-      //when
-      t: "friday",
+      t: "friday", //when, populate start-end dates Exact ranges can be specified the form 'YYYYMMDD00-YYYYMMDD00', for example '2012042500-2012042700'; the last two digits of each date in this format are ignored.
       
-      //category
-      c: "sports",
+      c: "sports", //category
 
-      where: "atlanta", 
+      where: "atlanta", //lat / long var populate on click on map
 
-      page_size: 20,
+      within: 25, //set radius
+
+      page_size: 25,
 
       sort_order: "popularity",
 
@@ -77,9 +50,7 @@ function show_alert2()
 
 Run Sample api searches <br><br>
 
-<input type="button" onclick="show_alert()" value="Query #1 " /> <br>
-
-<input type="button" onclick="show_alert2()" value="Query #2 " /> <br>
+<input type="button" onclick="show_alert2()" value="Query #1 " /> <br>
 
 </body>
 
