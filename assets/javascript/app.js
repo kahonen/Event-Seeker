@@ -121,10 +121,31 @@ function eventfulSearch() {
         var eventsArr = oData;
     
         console.log(eventsArr);
+        var events = eventsArr.events.event;
+
+        for (i = 0; i < events.length; i++) {
+
+            console.log(events[i].latitude, events[i].longitude);
+
+            //var title = events[i].title;
+            //var result = title.link(events[i].url);
+
+            var result = "<a href='" + events[i].url + "' target='_blank'>" + events[i].title + "</a>";
+
+
+            var greenIcon = new L.Icon({
+                iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+              });
+              L.marker([events[i].latitude, events[i].longitude], {icon: greenIcon}).bindPopup(result).openPopup().addTo(map);
+
+        }});
 
 });
 
-})};
+};
 
 eventfulSearch();
 
