@@ -5,7 +5,7 @@
 
     //now you can open modal from code
     $('#modal1').modal('open');
-  
+
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -20,8 +20,6 @@
         closeOnSelect: true // Close upon selecting a date,
         
     });
-
-
 
     L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
     var map = L.mapquest.map('map', {
@@ -41,7 +39,6 @@ function displayRoute(userStartLoc, userEndLoc) {
         zoom: 8,
     })  ;
    
-
 };
 
 function validateEnd (userStartDate, userEndDate) {
@@ -56,8 +53,6 @@ function validateEnd (userStartDate, userEndDate) {
     };
 };
 
-
-
   //on click of submit
   $("#submit").on("click", function search () {
 
@@ -71,7 +66,6 @@ function validateEnd (userStartDate, userEndDate) {
         $('#modal1').modal('close'); //added from up top
 
     displayRoute(userStartLoc,userEndLoc);
-
 
     //checks if a single checkbox is checked
     if ($('#concerts').is(':checked')) {
@@ -100,8 +94,6 @@ function validateEnd (userStartDate, userEndDate) {
     $('#targetDiv').prepend(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
 
     $('.button-collapse').sideNav();
-
-// }); moved to line __ so date variable would populate
 
 var lat;
 var lng;
@@ -151,11 +143,7 @@ function eventfulSearch() {
 
             console.log(events[i].latitude, events[i].longitude);
 
-            //var title = events[i].title;
-            //var result = title.link(events[i].url);
-
             var result = "<a href='" + events[i].url + "' target='_blank'>" + events[i].title + "</a>";
-
 
             var greenIcon = new L.Icon({
                 iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
@@ -172,6 +160,7 @@ function eventfulSearch() {
 };
 
 eventfulSearch();
-    };
+
+};
 
 });

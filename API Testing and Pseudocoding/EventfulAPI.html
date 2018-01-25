@@ -1,0 +1,59 @@
+
+<html>
+
+Javascript Sample page <br>
+
+<script type="text/javascript" src="http://api.eventful.com/js/api">
+
+</script>
+
+<script type="text/javascript">
+
+function show_alert2() {
+
+   var oArgs = {
+
+      app_key: "KDLDX7hfWzvMDssH",
+
+      //q: , //keyword
+
+      t: "friday", //when, populate start-end dates Exact ranges can be specified the form 'YYYYMMDD00-YYYYMMDD00', for example '2012042500-2012042700'; the last two digits of each date in this format are ignored.
+      
+      c: "sports", //category
+
+      where: "atlanta", //lat / long var populate on click on map
+
+      within: 25, //set radius
+
+      page_size: 25,
+
+      sort_order: "popularity",
+
+   };
+
+   EVDB.API.call("/events/search", oArgs, function(oData) {
+
+    var eventsArr = oData;
+
+    console.log(eventsArr);
+
+      // Note: this relies on the custom toString() methods below
+
+    });
+
+}
+
+</script>
+
+
+<body>
+
+Run Sample api searches <br><br>
+
+<input type="button" onclick="show_alert2()" value="Query #1 " /> <br>
+
+</body>
+
+</html>
+
+
