@@ -1,20 +1,26 @@
-// $(document).ready(function () {
-    // the "href" attribute of .modal-trigger must specify the modal ID that wants to be triggered
-    //initialize all modals           
-    $('.modal').modal();
+        
+    $('.modal').modal({
+        dismissible: false,
+    });
 
     //now you can open modal from code
     $('#modal1').modal('open');
-
+    $(".ui-datepicker").css('font-size', 10)
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
-        format: "mm/dd/yyyy",
+        format: 'mm/dd/yyyy', //working for proper display "mm/dd/yyyy"
+        formatSumbit: 'yyyy/mm/dd',
         today: 'Today',
         clear: 'Clear',
         close: 'Ok',
+        min: new Date(),
+        max: false,
         closeOnSelect: true // Close upon selecting a date,
+        
     });
+
+
 
     L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
     var map = L.mapquest.map('map', {
@@ -23,71 +29,48 @@
         zoom: 5,
     });
 
-
     $(".button-collapse").sideNav();
-    //     closeOnClick: false,
-    //   });
-    //setTimeout(mapKeyThing, 2000)
-
-// });
 
 function displayRoute(userStartLoc, userEndLoc) {
-    // L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
-    // map = L.mapquest.map('map', {
-    //     center: [39.410733, -100.546875],
-    //     layers: L.mapquest.tileLayer('map'),
-    //     zoom: 8,
-    // });
+
     var directions = L.mapquest.directions();
     directions.route({
         start: userStartLoc,
         end: userEndLoc,
         zoom: 8,
-    });
-}
+    })  ;
+   
 
-// function displayEventInfo() {
+};
 
-//     var queryURL = "http://api.eventful.com/json/events/search?app_key=GGCFgxMwzgX7bgfM&category="+ checks + "&location=" + location;
-//     var location = 
+function validateEnd (userStartDate, userEndDate) {
     
+    if (userEndDate < userStartDate) {
+        Materialize.toast('End date must occur on or after Start Date', 3000, 'rounded') // 'rounded' is the class I'm applying to the toast
+        return false
+    }
+    else if (userEndDate >= userStartDate) {
+        
+        return true
+    };
+};
 
-//     $.ajax({
-//       url: queryURL,
-//       method: "GET"
-//     }).done(function (response) {
 
-//  console.log(response)
-//     });
-// };
 
-// eventful api key GGCFgxMwzgX7bgfM.
+  //on click of submit
+  $("#submit").on("click", function search () {
 
-//on click of submit
-$("#submit").on("click", function () {
-
+  //create variables for start / end cities, start / end dates, categories selected
     var userStartLoc = $("#userStart").val().trim();
     var userEndLoc = $("#userEnd").val().trim();
     var userStartDate = $("#userDateStart").val().trim();
     var userEndDate = $("#userDateEnd").val().trim();
 
-    $("#userStart").empty();
-    $("#userEnd").empty();
-    //create variables for start / end cities, start / end dates, categories selected
-    displayRoute(userStartLoc,userEndLoc);
+    if (validateEnd(userStartDate, userEndDate)) {
+        $('#modal1').modal('close'); //added from up top
 
+    displayRoute(userStartLoc,userEndLoc)
 
-
-    //clear inputs after submit
-    // $("#userStart").val("");
-    // $("#userStartDate").val("");
-    // $("#userEnd").val("");
-    // $("#userDateEnd").val("");
-
-    // console.log(userStartLoc);
-    // console.log(userStartDate);
-    // console.log(userEndLoc);
-    // console.log(userEndDate);
 
     //checks if a single checkbox is checked
     if ($('#concerts').is(':checked')) {
@@ -97,7 +80,7 @@ $("#submit").on("click", function () {
     //checks all checkboxes and pushes the id to an array
     var checkboxes = $("input[type='checkbox']");
     console.log(checkboxes);
-    var checks = [];
+    checks = [];
 
     for (let i in checkboxes) {
         if (checkboxes[i].checked) {
@@ -106,21 +89,88 @@ $("#submit").on("click", function () {
     }
 
     console.log(checks)
-
-
+    
+    var imageLogo = $('#imageModal').children().last().attr('width', '175px').detach();
     var startInfo = $('#startInfo').detach();
     var endInfo = $('#endInfo').detach();
     var firstCol = $('#firstCol').detach();
     var secondCol = $('#secondCol').detach();
     var submitBtn = $('#submit').detach();
-    $('#targetDiv').prepend(startInfo, endInfo, firstCol, secondCol, submitBtn);
+    $('#targetDiv').prepend(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
 
     $('.button-collapse').sideNav();
 
+// }); moved to line __ so date variable would populate
+
+var lat;
+var lng;
+var latLng = "";
+var checks = [];
+var userDateRange = "";
+
+console.log(userDateRange);
+
+function eventfulSearch() {
+
+    map.on("click", function mapClick (e) {
+
+        lat = e.latlng.lat
+        lng = e.latlng.lng
+        latLng = lat + ", " + lng
+        console.log(latLng)
+        userDateRange = userStartDate + "-" + userEndDate;
+        console.log(userDateRange);
+
+    var oArgs = {
+
+        app_key: "KDLDX7hfWzvMDssH",
+
+        t: userDateRange, 
+     
+        c: checks, //category
+
+        where: latLng,
+
+        within: 50, //set radius
+
+        page_size: 25,
+
+        sort_order: "popularity"
+
+};
+
+    EVDB.API.call("/events/search", oArgs, function(oData) {
+
+        var eventsArr = oData;
+    
+        console.log(eventsArr);
+        var events = eventsArr.events.event;
+
+        for (i = 0; i < events.length; i++) {
+
+            console.log(events[i].latitude, events[i].longitude);
+
+            //var title = events[i].title;
+            //var result = title.link(events[i].url);
+
+            var result = "<a href='" + events[i].url + "' target='_blank'>" + events[i].title + "</a>";
+
+
+            var greenIcon = new L.Icon({
+                iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+              });
+              L.marker([events[i].latitude, events[i].longitude], {icon: greenIcon}).bindPopup(result).openPopup().addTo(map);
+
+        }});
+
 });
 
-map.on("click", function(e){
+};
 
-    console.log(e)
+eventfulSearch();
+    };
+
 });
-//http://api.eventful.com/json/events/search?app_key=XXX&category=music&location=london&sort_order=popularity
