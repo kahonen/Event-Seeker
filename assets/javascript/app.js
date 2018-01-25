@@ -1,4 +1,4 @@
-        
+
     $('.modal').modal({
         dismissible: false,
     });
@@ -24,22 +24,34 @@
     L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
     var map = L.mapquest.map('map', {
         center: [39.410733, -100.546875],
-        layers: L.mapquest.tileLayer('map'),
-        zoom: 5,
+        layers: L.mapquest.tileLayer('light'),
+        zoom: 12,
+        zoomControl: true,
+        
     });
+    map.zoomControl.setPosition('topright');
 
     $(".button-collapse").sideNav();
 
-function displayRoute(userStartLoc, userEndLoc) {
 
+    function displayRoute(userStartLoc, userEndLoc) {
+        $("g").empty();
+        $(".leaflet-marker-pane").empty();
+        $(".leaflet-shadow-pane").empty();
+     
+     
     var directions = L.mapquest.directions();
     directions.route({
         start: userStartLoc,
         end: userEndLoc,
-        zoom: 8,
-    })  ;
-   
-};
+        options: {
+            timeOverage: 25,
+            maxRoutes: 3,
+            zoom: 12,
+            enhancedNarrative: true,
+          },
+        });
+        };
 
 function validateEnd (userStartDate, userEndDate) {
     
@@ -55,7 +67,7 @@ function validateEnd (userStartDate, userEndDate) {
 
   //on click of submit
   $("#submit").on("click", function search () {
-
+    
   //create variables for start / end cities, start / end dates, categories selected
     var userStartLoc = $("#userStart").val().trim();
     var userEndLoc = $("#userEnd").val().trim();
@@ -65,7 +77,7 @@ function validateEnd (userStartDate, userEndDate) {
     if (validateEnd(userStartDate, userEndDate)) {
         $('#modal1').modal('close'); //added from up top
 
-    displayRoute(userStartLoc,userEndLoc);
+    displayRoute(userStartLoc,userEndLoc)
 
     //checks if a single checkbox is checked
     if ($('#concerts').is(':checked')) {
@@ -102,35 +114,35 @@ var checks = [];
 var userDateRange = "";
 
 console.log(userDateRange);
+  
+  function eventfulSearch() {
+  
+      map.on("click", function mapClick (e) {
+  
+          lat = e.latlng.lat
+          lng = e.latlng.lng
+          latLng = lat + ", " + lng
+          console.log(latLng)
+          userDateRange = userStartDate + "-" + userEndDate;
+          console.log(userDateRange);
+  
+      var oArgs = {
+  
+          app_key: "KDLDX7hfWzvMDssH",
+  
+          t: userDateRange, 
+       
+          c: checks, //category
 
-function eventfulSearch() {
+          where: latLng,
 
-    map.on("click", function mapClick (e) {
+          within: 50, //set radius
 
-        lat = e.latlng.lat
-        lng = e.latlng.lng
-        latLng = lat + ", " + lng
-        console.log(latLng)
-        userDateRange = userStartDate + "-" + userEndDate;
-        console.log(userDateRange);
+          page_size: 25,
 
-    var oArgs = {
+          sort_order: "popularity"
 
-        app_key: "KDLDX7hfWzvMDssH",
-
-        t: userDateRange, 
-     
-        c: checks, //category
-
-        where: latLng,
-
-        within: 50, //set radius
-
-        page_size: 25,
-
-        sort_order: "popularity"
-
-};
+    };
 
     EVDB.API.call("/events/search", oArgs, function(oData) {
 
