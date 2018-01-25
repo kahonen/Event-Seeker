@@ -27,8 +27,8 @@
         layers: L.mapquest.tileLayer('light'),
         zoom: 12,
         zoomControl: true,
-        
     });
+
     map.zoomControl.setPosition('topright');
 
     $(".button-collapse").sideNav();
@@ -38,7 +38,6 @@
         $("g").empty();
         $(".leaflet-marker-pane").empty();
         $(".leaflet-shadow-pane").empty();
-     
      
     var directions = L.mapquest.directions();
     directions.route({
@@ -103,7 +102,8 @@ function validateEnd (userStartDate, userEndDate) {
     var firstCol = $('#firstCol').detach();
     var secondCol = $('#secondCol').detach();
     var submitBtn = $('#submit').detach();
-    $('#targetDiv').prepend(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
+
+    $('#targetDiv').append(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
 
     $('.button-collapse').sideNav();
 

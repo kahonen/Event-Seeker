@@ -18,3 +18,9 @@ header, main, footer {
     right: 50%; 
 } 
 }
+
+#modal2 {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
