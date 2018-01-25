@@ -1,17 +1,22 @@
         
-    $('.modal').modal();
+    $('.modal').modal({
+        dismissible: false,
+    });
 
     //now you can open modal from code
     $('#modal1').modal('open');
-
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
-        format: 'yyyy/mm/dd', //working for proper display "mm/dd/yyyy"
+        format: 'mm/dd/yyyy', //working for proper display "mm/dd/yyyy"
+        formatSumbit: 'yyyy/mm/dd',
         today: 'Today',
         clear: 'Clear',
         close: 'Ok',
+        min: new Date(),
+        max: false,
         closeOnSelect: true // Close upon selecting a date,
+        
     });
 
     L.mapquest.key = 'fYd7BAWn2v1bYwb1BaSsqDb2cNX8ZLbz';
@@ -20,7 +25,6 @@
         layers: L.mapquest.tileLayer('map'),
         zoom: 5,
     });
-
 
     $(".button-collapse").sideNav();
 
@@ -31,15 +35,24 @@ function displayRoute(userStartLoc, userEndLoc) {
         start: userStartLoc,
         end: userEndLoc,
         zoom: 8,
-    });
-}
+    })  ;
+   
+};
 
-// var userStartDate;
-// var userEndDate;
+function validateEnd (userStartDate, userEndDate) {
+    
+    if (userEndDate < userStartDate) {
+        Materialize.toast('End date must occur on or after Start Date', 3000, 'rounded') // 'rounded' is the class I'm applying to the toast
+        return false
+    }
+    else if (userEndDate >= userStartDate) {
+        
+        return true
+    };
+};
 
   //on click of submit
   $("#submit").on("click", function search () {
-
 
   //create variables for start / end cities, start / end dates, categories selected
     var userStartLoc = $("#userStart").val().trim();
@@ -47,8 +60,10 @@ function displayRoute(userStartLoc, userEndLoc) {
     var userStartDate = $("#userDateStart").val().trim();
     var userEndDate = $("#userDateEnd").val().trim();
 
-    //create variables for start / end cities, start / end dates, categories selected
-    displayRoute(userStartLoc,userEndLoc);
+    if (validateEnd(userStartDate, userEndDate)) {
+        $('#modal1').modal('close'); //added from up top
+
+    displayRoute(userStartLoc,userEndLoc)
 
     //checks if a single checkbox is checked
     if ($('#concerts').is(':checked')) {
@@ -68,16 +83,15 @@ function displayRoute(userStartLoc, userEndLoc) {
 
     console.log(checks)
 
+    var imageLogo = $('#imageModal').children().last().attr('width', '175px').detach();
     var startInfo = $('#startInfo').detach();
     var endInfo = $('#endInfo').detach();
     var firstCol = $('#firstCol').detach();
     var secondCol = $('#secondCol').detach();
     var submitBtn = $('#submit').detach();
-    $('#targetDiv').prepend(startInfo, endInfo, firstCol, secondCol, submitBtn);
+    $('#targetDiv').prepend(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
 
     $('.button-collapse').sideNav();
-
-// }); moved to line __ so date variable would populate
 
 var lat;
 var lng;
@@ -127,14 +141,10 @@ function eventfulSearch() {
 
             console.log(events[i].latitude, events[i].longitude);
 
-            //var title = events[i].title;
-            //var result = title.link(events[i].url);
-
             var result = "<a href='" + events[i].url + "' target='_blank'>" + events[i].title + "</a>";
 
-
             var greenIcon = new L.Icon({
-                iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-black.png',
                 iconSize: [25, 41],
                 iconAnchor: [12, 41],
                 popupAnchor: [1, -34],
@@ -148,5 +158,7 @@ function eventfulSearch() {
 };
 
 eventfulSearch();
+
+};
 
 });
