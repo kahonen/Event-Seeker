@@ -5,7 +5,7 @@
 
     //now you can open modal from code
     $('#modal1').modal('open');
-  
+
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -54,6 +54,7 @@
         };
     
 
+
 function validateEnd (userStartDate, userEndDate) {
     
     if (userEndDate < userStartDate) {
@@ -68,57 +69,53 @@ function validateEnd (userStartDate, userEndDate) {
 
   //on click of submit
   $("#submit").on("click", function search () {
-   
     
+  //create variables for start / end cities, start / end dates, categories selected
+    var userStartLoc = $("#userStart").val().trim();
+    var userEndLoc = $("#userEnd").val().trim();
+    var userStartDate = $("#userDateStart").val().trim();
+    var userEndDate = $("#userDateEnd").val().trim();
 
-    //create variables for start / end cities, start / end dates, categories selected
-      var userStartLoc = $("#userStart").val().trim();
-      var userEndLoc = $("#userEnd").val().trim();
-      var userStartDate = $("#userDateStart").val().trim();
-      var userEndDate = $("#userDateEnd").val().trim();
-  
-      if (validateEnd(userStartDate, userEndDate)) {
-          $('#modal1').modal('close'); //added from up top
-  
-     displayRoute(userStartLoc,userEndLoc);
-      
-  
-      //checks if a single checkbox is checked
-      if ($('#concerts').is(':checked')) {
-          console.log('concerts');
-      };
-  
-      //checks all checkboxes and pushes the id to an array
-      var checkboxes = $("input[type='checkbox']");
-      console.log(checkboxes);
-      checks = [];
-  
-      for (let i in checkboxes) {
-          if (checkboxes[i].checked) {
-              checks.push(checkboxes[i].id)
-          }
-      }
-  
-      console.log(checks)
-  
-      var imageLogo = $('#imageModal').children().last().attr('width', '175px').detach();
-      var startInfo = $('#startInfo').detach();
-      var endInfo = $('#endInfo').detach();
-      var firstCol = $('#firstCol').detach();
-      var secondCol = $('#secondCol').detach();
-      var submitBtn = $('#submit').detach();
-      $('#targetDiv').append(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
-  
-      $('.button-collapse').sideNav();
-  
-  
-  var lat;
-  var lng;
-  var latLng = "";
-  var checks = [];
-  var userDateRange = "";
-  
-  console.log(userDateRange);
+    if (validateEnd(userStartDate, userEndDate)) {
+        $('#modal1').modal('close'); //added from up top
+
+    displayRoute(userStartLoc,userEndLoc)
+
+    //checks if a single checkbox is checked
+    if ($('#concerts').is(':checked')) {
+        console.log('concerts');
+    };
+
+    //checks all checkboxes and pushes the id to an array
+    var checkboxes = $("input[type='checkbox']");
+    console.log(checkboxes);
+    checks = [];
+
+    for (let i in checkboxes) {
+        if (checkboxes[i].checked) {
+            checks.push(checkboxes[i].id)
+        }
+    }
+
+    console.log(checks)
+
+    var imageLogo = $('#imageModal').children().last().attr('width', '175px').detach();
+    var startInfo = $('#startInfo').detach();
+    var endInfo = $('#endInfo').detach();
+    var firstCol = $('#firstCol').detach();
+    var secondCol = $('#secondCol').detach();
+    var submitBtn = $('#submit').detach();
+    $('#targetDiv').prepend(imageLogo, startInfo, endInfo, firstCol, secondCol, submitBtn);
+
+    $('.button-collapse').sideNav();
+
+var lat;
+var lng;
+var latLng = "";
+var checks = [];
+var userDateRange = "";
+
+console.log(userDateRange);
   
   function eventfulSearch() {
   
