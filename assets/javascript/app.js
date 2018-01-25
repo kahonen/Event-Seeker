@@ -83,11 +83,7 @@ function validateEnd (userStartDate, userEndDate) {
         console.log('concerts');
     };
 
-    var lat;
-    var lng;
-    var latLng = "";
     var checks = [];
-    var userDateRange = "";
 
     //checks all checkboxes and pushes the id to an array
     var checkboxes = $("input[type='checkbox']");
@@ -113,6 +109,11 @@ function validateEnd (userStartDate, userEndDate) {
 
     $('.button-collapse').sideNav();
 
+    var lat;
+    var lng;
+    var latLng = "";
+    var userDateRange = "";
+
 console.log(userDateRange);
   
   function eventfulSearch() {
@@ -137,7 +138,7 @@ console.log(userDateRange);
 
           where: latLng,
 
-          within: 25, //set radius
+          within: 50, //set radius
 
           page_size: 30, 
 
