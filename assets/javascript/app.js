@@ -5,6 +5,7 @@
 
     //now you can open modal from code
     $('#modal1').modal('open');
+
     $('.datepicker').pickadate({
         selectMonths: true, // Creates a dropdown to control month
         selectYears: 15, // Creates a dropdown of 15 years to control year,
@@ -13,6 +14,7 @@
         today: 'Today',
         clear: 'Clear',
         close: 'Ok',
+        container: 'body',
         min: new Date(),
         max: false,
         closeOnSelect: true // Close upon selecting a date,
@@ -63,7 +65,7 @@ function validateEnd (userStartDate, userEndDate) {
     if (validateEnd(userStartDate, userEndDate)) {
         $('#modal1').modal('close'); //added from up top
 
-    displayRoute(userStartLoc,userEndLoc)
+    displayRoute(userStartLoc,userEndLoc);
 
     //checks if a single checkbox is checked
     if ($('#concerts').is(':checked')) {
