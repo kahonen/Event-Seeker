@@ -83,6 +83,12 @@ function validateEnd (userStartDate, userEndDate) {
         console.log('concerts');
     };
 
+    var lat;
+    var lng;
+    var latLng = "";
+    var checks = [];
+    var userDateRange = "";
+
     //checks all checkboxes and pushes the id to an array
     var checkboxes = $("input[type='checkbox']");
     console.log(checkboxes);
@@ -107,12 +113,6 @@ function validateEnd (userStartDate, userEndDate) {
 
     $('.button-collapse').sideNav();
 
-var lat;
-var lng;
-var latLng = "";
-var checks = [];
-var userDateRange = "";
-
 console.log(userDateRange);
   
   function eventfulSearch() {
@@ -125,6 +125,7 @@ console.log(userDateRange);
           console.log(latLng)
           userDateRange = userStartDate + "-" + userEndDate;
           console.log(userDateRange);
+          console.log(checks);
   
       var oArgs = {
   
@@ -132,17 +133,19 @@ console.log(userDateRange);
   
           t: userDateRange, 
        
-          c: checks, //category
+          c: checks, 
 
           where: latLng,
 
-          within: 50, //set radius
+          within: 25, //set radius
 
-          page_size: 25,
+          page_size: 30, 
 
           sort_order: "popularity"
 
     };
+
+    console.log(oArgs)
 
     EVDB.API.call("/events/search", oArgs, function(oData) {
 
